@@ -33,7 +33,7 @@ namespace TodoApi.Controllers
             return await _context.TodoItems.ToListAsync();
         }
 
-        // GET: api/Todo/5
+        // GET: api/Todo/id
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
         {
@@ -45,6 +45,16 @@ namespace TodoApi.Controllers
             }
 
             return todoItem;
+        }
+        
+        // POST: api/Todo
+        [HttpPost]
+        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem item)
+        {
+            _context.TodoItems.Add(item);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetTodoItem), new { id = item.Id }, item);
         }
     }
 }
